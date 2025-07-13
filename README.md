@@ -184,6 +184,6 @@ Sobre o desenvolvimento de um painel administrativo para este sistema:
 1. Quanto tempo levaria? 
  - 1 Sprint (10 dias uteis)
 2. Quantos desenvolvedores?
- - 3 desenvolvedoress
+ - 3 desenvolvedores
 3. Qual a senioridade dos desenvolvedores?
  - 1 Senior, 2 Plenos
