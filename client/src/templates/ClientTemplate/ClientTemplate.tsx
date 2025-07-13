@@ -1,41 +1,15 @@
-import Sidebar from "@components/Sidebar";
-import styled from "styled-components";
-import {
-  Container,
-  Select,
-  Header,
-  Grid,
-  Card,
-  Button,
-  Paginate,
-  Main,
-} from "@components/index";
-import { Client, ClientCreate } from "@interfaces/client.interface";
-import ClientActionsOrganisms from "@organisms/ClientActionsOrganisms";
-import { HiOutlinePlus, HiOutlineTrash, HiOutlinePencil } from "react-icons/hi";
 import { useEffect, useState } from "react";
-import { selectedClient } from "@store/states/clients/clientsSlice";
 import { useDispatch } from "react-redux";
-import { currencyFormat } from "@utils/currencyFormat";
-import { HiOutlineMinus } from "react-icons/hi";
 
-const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-`;
+import { Client, ClientCreate } from "@interfaces/client.interface";
+import { selectedClient } from "@store/states/clients/clientsSlice";
 
-const Title = styled.h2`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #222;
-`;
-
-interface OptionsProps {
-  value: string | number;
-  label: string | number;
-}
+import Sidebar from "@components/Sidebar";
+import { Container, Header, Button, Paginate, Main } from "@components/index";
+import ClientActionsOrganisms from "@organisms/ClientOrganisms/ClientActionsOrganisms";
+import ClientCardOrganisms from "@organisms/ClientOrganisms/ClientCardOrganisms";
+import { ActionsProps, OptionsProps } from "@interfaces/common.interface";
+import ClientLegendOrganisms from "@organisms/ClientOrganisms/ClientLegendOrganisms";
 
 interface ClientTemplateProps {
   currentPage: number;
@@ -58,11 +32,6 @@ interface ClientTemplateProps {
   total: number;
   refetch: () => void;
   selected: string[];
-}
-
-interface ActionsProps {
-  type?: "create" | "edit" | "delete" | null;
-  client?: Client | null;
 }
 
 const ClientTemplate = ({
@@ -116,18 +85,6 @@ const ClientTemplate = ({
   };
 
   useEffect(() => {
-    if (error.addStatus === "fulfilled" || error.updateStatus === "fulfilled") {
-      dispatchAction({});
-    }
-
-    if (error.addStatus === "rejected" || error.updateStatus === "rejected") {
-      return window.alert(
-        "Algum campo esta incorreto ou vazio, corrija e tente novamente"
-      );
-    }
-  }, [error.addStatus, error.updateStatus]);
-
-  useEffect(() => {
     if (!clients.length && currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -139,53 +96,19 @@ const ClientTemplate = ({
       <Header setOpenMenu={setOpenMenu} name={name} />
       <Container>
         <Main>
-          <TitleRow>
-            <Title>{total ?? 0} clientes encontrados:</Title>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ color: "#888", fontSize: 14 }}>
-                Clientes por página:
-              </span>
-              <Select
-                value={itemByPage}
-                change={(value) => setItemByPage(value as number)}
-                options={options}
-              />
-            </div>
-          </TitleRow>
-          <Grid>
-            {clients.map((client) => (
-              <Card
-                key={client.id}
-                title={client.name}
-                info={[
-                  `Salário: ${currencyFormat(client.salary)}`,
-                  `Empresa: ${currencyFormat(client.enterprise)}`,
-                ]}
-              >
-                {selected.includes(client.id) ? (
-                  <HiOutlineMinus className="pointer" strokeWidth={3} />
-                ) : (
-                  <HiOutlinePlus
-                    className="pointer"
-                    strokeWidth={3}
-                    onClick={() => {
-                      dispatch(selectedClient(client?.id));
-                    }}
-                  />
-                )}
-
-                <HiOutlinePencil
-                  className="pointer"
-                  onClick={() => dispatchAction({ type: "edit", client })}
-                />
-                <HiOutlineTrash
-                  className="pointer"
-                  style={{ color: "var(--red-color)" }}
-                  onClick={() => dispatchAction({ type: "delete", client })}
-                />
-              </Card>
-            ))}
-          </Grid>
+          <ClientLegendOrganisms
+            total={total}
+            itemByPage={itemByPage}
+            options={options}
+            setItemByPage={setItemByPage}
+          />
+          <ClientCardOrganisms
+            clients={clients}
+            dispatch={dispatch}
+            selectedClient={selectedClient}
+            selected={selected}
+            dispatchAction={dispatchAction}
+          />
         </Main>
         <Button
           variant="outlined"
@@ -204,6 +127,7 @@ const ClientTemplate = ({
         action={action}
         dispatchAction={dispatchAction}
         submit={submit}
+        error={error}
       />
     </div>
   );

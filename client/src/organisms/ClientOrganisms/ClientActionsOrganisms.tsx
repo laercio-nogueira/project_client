@@ -2,19 +2,16 @@ import Input from "@components/Input";
 import { useEffect, useState } from "react";
 import { Modal } from "@components/index";
 import { Client } from "@interfaces/client.interface";
-
-interface ActionsProps {
-  type?: "create" | "edit" | "delete" | null;
-  client?: Client | null;
-}
+import { ActionsProps } from "@interfaces/common.interface";
 
 interface PageClientModalProps {
-  action: {
-    type?: "create" | "delete" | "edit" | null;
-    client?: Client | null;
-  };
+  action: ActionsProps;
   submit: (data: Client) => void;
   dispatchAction: ({ type, client }: ActionsProps) => void;
+  error: {
+    updateStatus: string;
+    addStatus: string;
+  };
 }
 
 const labelButton = {
@@ -27,6 +24,7 @@ const ClientActionsOrganisms = ({
   action,
   submit,
   dispatchAction,
+  error,
 }: PageClientModalProps) => {
   const [data, setData] = useState<Client>({
     id: "",
@@ -46,7 +44,6 @@ const ClientActionsOrganisms = ({
 
   const handleSubmit = async () => {
     await submit(data);
-    resetData();
   };
 
   const handleClose = () => {
@@ -57,6 +54,19 @@ const ClientActionsOrganisms = ({
   useEffect(() => {
     action.client && setData(action.client);
   }, [action.client]);
+
+  useEffect(() => {
+    if (error.addStatus === "fulfilled" || error.updateStatus === "fulfilled") {
+      dispatchAction({});
+      resetData();
+    }
+
+    if (error.addStatus === "rejected" || error.updateStatus === "rejected") {
+      return window.alert(
+        "Algum campo esta incorreto ou vazio, corrija e tente novamente"
+      );
+    }
+  }, [error.addStatus, error.updateStatus]);
 
   if (!action?.type) return null;
 

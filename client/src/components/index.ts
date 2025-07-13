@@ -9,6 +9,7 @@ import Header from "./Header";
 import Grid from "./Grid";
 import Card from "./Card";
 import Paginate from "./Paginate";
+import Wrapper from "./Wrapper";
 
 export {
   Title,
@@ -23,4 +24,5 @@ export {
   Main,
   Header,
   Paginate,
+  Wrapper,
 };

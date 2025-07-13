@@ -10,12 +10,28 @@ const TypographStyled = styled.p`
   margin: 0;
 `;
 
+const TitleStyled = styled.h2`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+`;
+
 interface TypographyProps extends React.HTMLAttributes<HTMLParagraphElement> {
   children: React.ReactNode;
+  variant?: string;
 }
 
-const Typograph = ({ children, ...props }: TypographyProps): JSX.Element => {
-  return <TypographStyled {...props}>{children}</TypographStyled>;
+const Typograph = ({
+  children,
+  variant,
+  ...props
+}: TypographyProps): JSX.Element => {
+  switch (variant) {
+    case "h2":
+      return <TitleStyled {...props}>{children}</TitleStyled>;
+    default:
+      return <TypographStyled {...props}>{children}</TypographStyled>;
+  }
 };
 
 export default Typograph;

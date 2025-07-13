@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import { useSelector } from "react-redux";
 import ClientPage from "./pages/ClientPage/ClientPage";
 import ClientSelectedPage from "./pages/ClientPage/ClientSelectedPage";
