@@ -1,0 +1,64 @@
+$mt-base: 0.5rem;
+$mb-base: 0.5rem;
+$ml-base: 0.5rem;
+$mr-base: 0.5rem;
+
+$pt-base: 0.5rem;
+$pb-base: 0.5rem;
+$pl-base: 0.5rem;
+$pr-base: 0.5rem;
+
+.text-center {
+  text-align: center;
+}
+
+.h-full {
+  min-height: 100vh;
+}
+
+.w-full {
+  min-height: 100vh;
+}
+
+.pointer {
+  cursor: pointer
+}
+
+.right {
+  float: right
+}
+
+
+@for $i from 0 through 5 {
+  .mt-#{$i} {
+    margin-top: $i * $mt-base !important;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: $i * $mb-base !important;
+  }
+
+  .ml-#{$i} {
+    margin-left: $i * $ml-base !important;
+  }
+
+  .mr-#{$i} {
+    margin-right: $i * $mr-base !important;
+  }
+
+  .pt-#{$i} {
+    padding-top: $i * $pt-base !important;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: $i * $pb-base !important;
+  }
+
+  .pl-#{$i} {
+    padding-left: $i * $pl-base !important;
+  }
+
+  .pr-#{$i} {
+    padding-right: $i * $pr-base !important;
+  }
+}

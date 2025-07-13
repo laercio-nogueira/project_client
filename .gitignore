@@ -1,0 +1,7 @@
+node_modules/
+dist/
+build/
+coverage/
+bff/dist/
+bff/node_modules
+client/node_modules

@@ -1,0 +1,150 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "4173:4173"
+    environment:
+      NODE_ENV: production,
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_DATABASE: teddy
+      ELASTICSEARCH_NODE: http://elasticsearch:9200
+      ELASTIC_APM_SERVICE_NAME: backend
+      ELASTIC_APM_SERVER_URL: http://apm:8200
+      ELASTIC_APM_LOG_LEVEL: info
+      ELASTIC_APM_ACTIVE: true
+      RABBIT_MQ_URL: amqp://rabbitmq:5672
+      RABBIT_MQ_QUEUE: application
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      apm:
+        condition: service_started
+    networks:
+      - application_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - application_network
+
+  db:
+    image: postgres
+    restart: always
+    container_name: db_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: teddy
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - application_network
+
+  elasticsearch:
+    image: elasticsearch:8.14.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://elasticsearch:9200/_cluster/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+    networks:
+      - application_network
+
+  kibana:
+    image: kibana:8.14.0
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://kibana:5601/api/status"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    networks:
+      - application_network
+
+  metricbeat:
+    image: elastic/metricbeat:8.14.0
+    environment:
+      - setup.kibana.host=kibana:5601
+      - output.elasticsearch.hosts=["elasticsearch:9200"]
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+      - ./config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+    restart: always
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    networks:
+      - application_network
+
+  heartbeat:
+    image: elastic/heartbeat:8.14.0
+    volumes:
+      - ./config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    environment:
+      - setup.kibana.host=kibana:5601
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - application_network
+
+  apm:
+    image: docker.elastic.co/apm/apm-server:7.15.2
+    user: apm-server
+    volumes:
+      - ./config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+    ports:
+      - "8200:8200"
+    restart: always
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - application_network
+
+volumes:
+  db_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  application_network:
+    driver: bridge

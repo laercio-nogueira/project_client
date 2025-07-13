@@ -1,0 +1,24 @@
+{
+  "name": "teddy-open-finance",
+  "version": "1.0.0",
+  "description": "Projeto da Teddy Open Finance",
+  "author": "Laercio Carlos Nogueira",
+  "main": "index.js",
+  "scripts": {
+    "prod": "npm-run-all --parallel prod:backend prod:client",
+    "prod:backend": "cd bff && npm run start",
+    "prod:client": "cd client && npm run preview",
+    "dev": "npm-run-all --parallel dev:backend dev:client",
+    "dev:backend": "cd bff && npm run start:dev",
+    "dev:client": "cd client && npm run dev"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "engines": {
+    "npm": ">=10.8.2",
+    "node": ">=24.0.0"
+  }
+}
