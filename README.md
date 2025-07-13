@@ -35,8 +35,8 @@ clientes selecionados.
 
 1. **Clone o repositório:**
    ```bash
-   git clone <repo-url>
-   cd ./brain-culture
+   git clone https://github.com/laercio-nogueira/project_client.git
+   cd ./project_client
    ```
 2. Instale as dependencias (Execute na raiz do projeto)
    ```bash
@@ -177,3 +177,13 @@ repo-url/
 │   ├── node_modules/
 │   └── tests/               # Testes do frontend
 ```
+
+## Perguntas do Teste:
+
+Sobre o desenvolvimento de um painel administrativo para este sistema:
+1. Quanto tempo levaria? 
+ - Sprint (10 dias uteis)
+2. Quantos desenvolvedores?
+ - 3 desenvolvedoress
+3. Qual a senioridade dos desenvolvedores?
+ - 1 Senior, 2 Plenos
