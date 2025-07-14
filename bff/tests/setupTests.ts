@@ -1,4 +1,5 @@
 import * as crypto from 'crypto'
+import 'reflect-metadata'
 
 global.crypto = {
   getRandomValues: (buffer: any) => {
