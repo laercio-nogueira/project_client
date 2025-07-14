@@ -1,4 +1,4 @@
-import { ErrorI } from "@interfaces/error.interface";
+import { ErrorI } from "../../src/interfaces/error.interface";
 
 describe("ErrorI interface structure", () => {
   test("should match structure with message array", () => {
@@ -10,6 +10,9 @@ describe("ErrorI interface structure", () => {
           message: ["Campo obrigatório", "Formato inválido"],
         },
       },
+      status: "",
+      isUninitialized: false,
+      reset: () => {},
     };
 
     expect(errorObject.isLoading).toBe(false);
@@ -27,6 +30,9 @@ describe("ErrorI interface structure", () => {
           message: [],
         },
       },
+      status: "",
+      isUninitialized: false,
+      reset: () => {},
     };
 
     expect(errorObject.isLoading).toBe(true);

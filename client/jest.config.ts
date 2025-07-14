@@ -24,6 +24,7 @@ const config: Config = {
     "@config/(.*)": "<rootDir>/src/config/$1",
     "@templates/(.*)": "<rootDir>/src/templates/$1",
     "@interfaces/(.*)": "<rootDir>/src/interfaces/$1",
+    "\\.(svg|png|jpg|jpeg|gif|webp)$": "<rootDir>/tests/__mocks__/fileMock.js",
   },
 };
 

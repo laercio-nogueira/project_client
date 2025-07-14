@@ -1,7 +1,6 @@
 import { Card, Grid } from "@components/index";
 import { Client } from "@interfaces/client.interface";
 import { ActionsProps } from "@interfaces/common.interface";
-import { UnknownAction } from "@reduxjs/toolkit";
 import { currencyFormat } from "@utils/currencyFormat";
 import { Dispatch } from "react";
 import {

@@ -1,4 +1,4 @@
-import { store, useAppDispatch } from "@store/index";
+import { store, useAppDispatch } from "../../src/store";
 import { useDispatch } from "react-redux";
 
 const mockDispatch = jest.fn();
@@ -15,7 +15,7 @@ describe("Redux store", () => {
     expect(state).toHaveProperty("user");
 
     expect(Object.keys(state)).toEqual(
-      expect.arrayContaining(["user", "UserApi"])
+      expect.arrayContaining(["clients", "user", "ClientApi", "_persist"])
     );
   });
 
