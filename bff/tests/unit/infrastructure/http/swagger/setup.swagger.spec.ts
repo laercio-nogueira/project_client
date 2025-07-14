@@ -29,7 +29,7 @@ describe('setupSwagger', () => {
     expect(createSwaggerConfig).toHaveBeenCalled()
     expect(SwaggerModule.createDocument).toHaveBeenCalledWith(app, 'config')
     expect(SwaggerModule.setup).toHaveBeenCalledWith('api', app, 'document', {
-      customSiteTitle: 'Brain Agriculture',
+      customSiteTitle: 'Teddy Open Finance',
       swaggerOptions: {
         docExpansion: 'none',
         filter: false,

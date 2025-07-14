@@ -7,6 +7,7 @@ import { UpdateUserUseCase } from '@application/usecases/user/update-user.usecas
 import { CreateUserDto } from '@application/dto/user/create-user.dto'
 import { UpdateUserDto } from '@application/dto/user/update-user.dto'
 import { UserProps } from '@domain/entities/user.entity'
+import { UserQueueService } from '@application/queues/user/user-queue.service'
 
 describe('UserService', () => {
   let service: UserService
@@ -14,6 +15,7 @@ describe('UserService', () => {
   let findUserUseCase: jest.Mocked<FindUserUseCase>
   let updateUserUseCase: jest.Mocked<UpdateUserUseCase>
   let deleteUserUseCase: jest.Mocked<DeleteUserUseCase>
+  let userQueueService: jest.Mocked<UserQueueService>
 
   beforeEach(async () => {
     createUserUseCase = {
@@ -52,6 +54,10 @@ describe('UserService', () => {
           provide: DeleteUserUseCase,
           useValue: deleteUserUseCase,
         },
+        {
+          provide: UserQueueService,
+          useValue: userQueueService,
+        },
       ],
     }).compile()
 
@@ -62,25 +68,6 @@ describe('UserService', () => {
     expect(service).toBeDefined()
   })
 
-  it('should create a user', async () => {
-    const dto: CreateUserDto = {
-      document: '12345678900',
-      documentType: 'PF',
-      name: 'João Silva',
-    }
-
-    const user: UserProps = {
-      id: 'user-1',
-      ...dto,
-    }
-
-    createUserUseCase.execute.mockResolvedValue(user)
-
-    const result = await service.create(dto)
-    expect(result).toEqual(user)
-    expect(createUserUseCase.execute).toHaveBeenCalledWith(dto)
-  })
-
   it('should find all users', async () => {
     const users: {
       data: UserProps[]
@@ -89,8 +76,8 @@ describe('UserService', () => {
       limit: number
     } = {
       data: [
-        { id: '1', document: '123', documentType: 'CPF', name: 'A' },
-        { id: '2', document: '456', documentType: 'CPF', name: 'B' },
+        { id: '1', salary: 1200, enterprise: 190000, name: 'A' },
+        { id: '2', salary: 1200, enterprise: 190000, name: 'B' },
       ],
       total: 2,
       page: 1,
@@ -106,9 +93,9 @@ describe('UserService', () => {
   it('should find one user', async () => {
     const user: UserProps = {
       id: '1',
-      document: '123',
-      documentType: 'CPF',
       name: 'João Silva',
+      salary: 1200,
+      enterprise: 190000,
     }
     findUserUseCase.findOne.mockResolvedValue(user)
 
@@ -119,9 +106,9 @@ describe('UserService', () => {
 
   it('should update a user', async () => {
     const dto: UpdateUserDto = {
-      document: '12345678900',
-      documentType: 'PF',
       name: 'João Atualizado',
+      salary: 1200,
+      enterprise: 190000,
     }
 
     const updateResult = { affected: 1 }

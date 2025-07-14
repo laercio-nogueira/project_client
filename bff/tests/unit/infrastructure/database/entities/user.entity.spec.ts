@@ -3,13 +3,13 @@ import { UserEntity } from '@infrastructure/database/entities/user.entity'
 describe('UserEntity', () => {
   it('should create an instance with correct properties', () => {
     const user = new UserEntity()
-    user.document = '12345678900'
-    user.documentType = 'CPF'
+    user.salary = 1200
+    user.enterprise = 190000
     user.name = 'João Silva'
 
     expect(user).toBeDefined()
-    expect(user.document).toBe('12345678900')
-    expect(user.documentType).toBe('CPF')
+    expect(user.salary).toBe(1200)
+    expect(user.enterprise).toBe(190000)
     expect(user.name).toBe('João Silva')
     expect(user.createdAt).toBeUndefined()
     expect(user.id).toBeUndefined()

@@ -21,8 +21,8 @@ describe('FindUserUseCase', () => {
       const mockUser = {
         id: '1',
         name: 'João',
-        document: '12345678901',
-        documentType: 'PF',
+        salary: 1200,
+        enterprise: 190000,
       }
       repository.findOne.mockResolvedValue(mockUser)
 
@@ -46,14 +46,14 @@ describe('FindUserUseCase', () => {
           {
             id: '1',
             name: 'João',
-            document: '12345678901',
-            documentType: 'PF',
+            salary: 1200,
+            enterprise: 190000,
           },
           {
             id: '2',
             name: 'Empresa X',
-            document: '12345678000199',
-            documentType: 'PJ',
+            salary: 1200,
+            enterprise: 190000,
           },
         ],
         10,
@@ -63,19 +63,23 @@ describe('FindUserUseCase', () => {
 
       const result = await useCase.findAll(1, 10)
 
-      expect(repository.findAndCount).toHaveBeenCalledWith()
+      expect(repository.findAndCount).toHaveBeenCalledWith({
+        order: { createdAt: 'DESC' },
+        skip: 0,
+        take: 10,
+      })
 
       expect(result).toEqual({
         data: [
           {
-            document: '123.456.789-01',
-            documentType: 'PF',
+            salary: 1200,
+            enterprise: 190000,
             id: '1',
             name: 'João',
           },
           {
-            document: '12.345.678/0001-99',
-            documentType: 'PJ',
+            salary: 1200,
+            enterprise: 190000,
             id: '2',
             name: 'Empresa X',
           },

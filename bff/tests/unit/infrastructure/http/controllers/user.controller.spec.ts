@@ -49,9 +49,9 @@ describe('UserController', () => {
   describe('create', () => {
     it('should call userService.create and return the result', async () => {
       const dto: UserCreateDto = {
-        document: '12345678900',
-        documentType: 'PF',
         name: 'John Doe',
+        salary: 1200,
+        enterprise: 190000,
       }
       const createdUser: UserResponseDto = { id: 'uuid', ...dto }
 
@@ -67,7 +67,7 @@ describe('UserController', () => {
   describe('findAll', () => {
     it('should call userService.findAll and return the result', async () => {
       const users: UserResponseDto[] = [
-        { id: 'uuid1', document: '123', documentType: 'CPF', name: 'John Doe' },
+        { id: 'uuid1', salary: 1200, enterprise: 190000, name: 'John Doe' },
       ]
 
       mockUserService.findAll.mockResolvedValue(users)
@@ -84,9 +84,9 @@ describe('UserController', () => {
       const userId = 'uuid1'
       const user: UserResponseDto = {
         id: userId,
-        document: '12345678900',
-        documentType: 'CPF',
         name: 'John Doe',
+        salary: 1200,
+        enterprise: 190000,
       }
 
       mockUserService.findOne.mockResolvedValue(user)
@@ -102,9 +102,9 @@ describe('UserController', () => {
     it('should call userService.update and return the result', async () => {
       const userId = 'uuid1'
       const dto = {
-        document: '98765432100',
-        documentType: 'CPF',
         name: 'John Updated',
+        salary: 1200,
+        enterprise: 190000,
       }
       const updatedUser: UserResponseDto = { id: userId, ...dto }
 

@@ -35,8 +35,8 @@ describe('UserController (e2e)', () => {
   it('/POST user', async () => {
     const createDto: CreateUserDto = {
       name: 'John Doe',
-      document: '12345678900',
-      documentType: 'PF',
+      salary: 2000.0,
+      enterprise: 190000.0,
     }
 
     const response = await request(app.getHttpServer())
@@ -69,8 +69,8 @@ describe('UserController (e2e)', () => {
   it('/PUT user/:id', async () => {
     const updateDto: UpdateUserDto = {
       name: 'Updated Name',
-      document: '98765432100',
-      documentType: 'PF',
+      salary: 1200,
+      enterprise: 190000,
     }
 
     const response = await request(app.getHttpServer())

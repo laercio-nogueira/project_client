@@ -45,11 +45,11 @@ export class UserCreateDto {
     example: '1900.1',
     description: 'Salario',
   })
-  salary: string
+  salary: number
 
   @ApiProperty({
     example: '120900.1',
     description: 'Empresa',
   })
-  enterprise: string
+  enterprise: number
 }
